@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Logged IN!</title>
+  </head>
+  <body>
+      <a href="/logout">Logout</a>
+      <h1>Hello, {{request.session.first_name}}!</h1>
+      <h3>Here is the list of your friends:</h3>
+
+
+    <div>
+      <table>
+        <tr>
+          <th>Alias</th>
+          <th>Action</th>
+        </tr>
+        {% for friend in friends %}
+        <tr>
+          <td>{{friend.user.first_name}}</td>
+          <td><a href="/user/{{friend.user.id}}">View Profile</a></td><td><a href="/remove/{{friend.user.id}}">Remove as Friend</a></td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <br>
+    <br>
+
+    <h3>Other Users Not On Your Friends List:</h3>
+    <div>
+      <table>
+        <tr>
+          <th>Alias</th>
+          <th>Action</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+          <td><a href="/user/{{user.id}}">{{user.first_name}}</a></td>
+          <td><form action="addfriend/{{user.id}}" method="post">
+            {%csrf_token  %}
+            <input type="hidden" name="uid" value="{{user.id}}">
+            <input type="submit" name="" value="Add as Friend">
+          </form></td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+<!-- <a href="/addfriend/{{user.id}}">Add as Friend</a> -->
+  </body>
+</html>
